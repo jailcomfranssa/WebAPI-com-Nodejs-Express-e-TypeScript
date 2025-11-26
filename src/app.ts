@@ -1,17 +1,19 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import routes from './routes';
+import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
 
 app.use(cors());
-app.use(morgan('combined'));
 app.use(helmet());
 app.use(express.json());
+app.use(morgan('dev'));
 
-app.use((req: Request, res: Response, next: NextFunction)=>{
-    res.status(200).send({message: 'Hello World!'});
-})
+app.use('/api', routes);
+
+app.use(errorHandler);
 
 export default app;
